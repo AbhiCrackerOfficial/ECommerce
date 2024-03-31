@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+{% load static %}{% load math_filters %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href={% static 'CSS/style.css' %}>
+    <link rel="stylesheet" href={% static 'CSS/profilestyle.css' %}>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+        integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>Profile</title>
+    <style>
+        .invalid-input {
+      padding: 10px;
+      background-color: #e74c3c;
+      color: #fff;
+      font-size: 20px;
+      width: 400px;
+      text-align: center;
+      position: absolute;
+      top: 80px;
+      right: -630px;
+      z-index: 9999;
+    }
+  
+    .success-input {
+      padding: 10px;
+      background-color: #6bdd4e;
+      color: #fff;
+      font-size: 20px;
+      width: 400px;
+      text-align: center;
+      position: absolute;
+      top: 80px;
+      right: -630px;
+      z-index: 9999;
+    }
+  
+    .info-input {
+      padding: 10px;
+      background-color: #151fe7;
+      color: #fff;
+      font-size: 20px;
+      width: 400px;
+      text-align: center;
+      position: absolute;
+      top: 80px;
+      right: -630px;
+      z-index: 9999;
+    }
+    </style>
+</head>
+
+<body>
+    {% if messages %}
+  <div id="message">
+    {% for message in messages %}
+    <div class="{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <header>
+    <nav class="outernav">
+      <nav class="navbar">
+        <div class="head-option">
+          <i class="fa fa-bars" id="internalmenu"></i>
+          <span class="heading"
+              ><a href="/"><img src="{% static 'logo/logo.png' %}" /><img
+                id="text-logo"
+                src="{% static 'logo/text.png' %}"
+            /></a></span>
+        </div>
+        <form id="search-form" action="{% url 'search' %}" method="get">
+          <div class="search">
+            <input type="text" name="search" id="search" placeholder="Search for products" style="border: none; border-right: 1px solid black" />
+            <div class="srhicon" >
+              <i class="fa fa-search" onclick="search()" style="font-size: 20px"></i>
+            </div>
+          </div>
+        </form>
+        
+        <div class="account" id="account">
+          {% if fname %} Welcome,{{fname}} {% else %} My Account {% endif%}
+          <i class="fa fa-caret-down"></i>
+
+          <div class="sign" id="sign">
+            <ul>
+              {% if fname %}
+              <a style="text-decoration: none; color:black;" href="/profile"><li>Profile</li></a>
+              <hr />
+              <a style="text-decoration: none; color:black;" href="/logout/"><li> Sign out</li></a>
+              {% else %}
+              <li><a style="text-decoration: none; color:black;" href="/signin/"> Sign in</a></li>
+              <hr />
+              <li><a style="text-decoration: none; color:black;" href="/signup/"> Sign up</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <div class="optionlogo">
+          <a href="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span>0</span>
+          </a>
+        </div>
+      </nav>
+      <div id="searchid">
+        <input type="text" name="search" id="search" placeholder="Search for products"
+          style="border: none; border-right: 1px solid black" />
+        <div class="srhicon">
+          <i class="fa fa-search" style="font-size: 20px"></i>
+        </div>
+      </div>
+      <nav class="addtionalnav" id="addnav">
+        <div class="optioncategory">
+          <div class="checklogin">
+            <a href="#">
+              <i class="fa fa-user-circle-o"></i>
+              <span class="checksignin">{% if fname %} {{fname}} {% else %} Sign in {% endif %}</span>
+              <span class="checksignout">Sign out</span>
+            </a>
+          </div>
+          <div class="container" id="dropmenu">
+            <div class="innercontainer">
+              <i class="fa fa-bars"></i>
+              <span>CATEGORY</span>
+            </div>
+            <i class="fa fa-caret-down"></i>
+            <div class="options-menus" id="menu">
+              <ul>
+                {% if categories %} {% for category in categories %}
+                <li>
+                  <a href="/search/?category={{category.id}}"
+                    >{{category.name}}</a
+                  >
+                </li>
+                {% endfor %} {% endif %}
+              </ul>
+            </div>
+          </div>
+          <div class="options">
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/shop">Shop</a></li>
+              <li><a href="/cart">Cart</a></li>
+              <li id="drop" style="display: none;">
+                Pages
+                <i class="fa fa-caret-down" style="color: #fff; padding: 5px"></i>
+                <div class="options-drop" id="drop-down">
+                  <a href="">Page 1</a>
+                  <a href="">Page 2</a>
+                </div>
+              </li>
+              <li><a href="/">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="optionlogo">
+          <a href="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span>{% if count %} {{count}} {% else %} 0 {% endif %}</span>
+          </a>
+        </div>
+        <div class="close" id="close">
+          <i class="fa fa-close"></i>
+        </div>
+      </nav>
+    </nav>
+  </header>
+
+  
+    <main class="main">
+
+        <div class="form" style="width:98vw;">
+            <h1>Profile Page</h1>
+            <form>
+                {% csrf_token %}
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" value="{{fname}} {{lname}}" readonly><br>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{email}}" readonly><br>
+
+                <label for="phone">Phone Number:</label>
+                <input type="tel" id="phone" name="phone" value="{{phone}}" readonly><br>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="********" readonly><br>
+                
+                <label for="street">Street:</label>
+                <input type="street" id="street" name="street" value="{{street}}" readonly><br>
+
+                <label for="state">State:</label>
+                <input type="text" id="state" name="state" value="{{state}}" readonly><br>
+
+                <label for="city">city:</label>
+                <input type="city" id="city" name="city" value="{{city}}" readonly><br>
+
+                <label for="zipcode">zipcode:</label>
+                <input type="zipcode" id="zipcode" name="zipcode" value="{{zipcode}}" readonly><br>
+
+
+                <!-- <input type="submit" value="SUBMIT" style="text-align: center;"> -->
+            </form>
+            <button id="update">UPDATE</button>
+        </div>
+
+        <hr>
+        <div class="orderstatus">
+            {% for order_with_items in orders_with_items %}
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th colspan="3">Order ID: {{ order_with_items.order.id }}</th>
+                    </tr>
+                    <tr>
+                        <th>Product</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_with_items.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price|multiply:item.quantity }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="2">Total Amount:</td>
+                        <td>{{ order_with_items.order|order_total_amount }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Order Date:</td>
+                        <td>{{ order_with_items.order.date_ordered }}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">Status:</td>
+                        <td class="{{ order_with_items.order.status|lower }}">{{ order_with_items.order.get_status_display }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+        {% endfor %}
+        
+        </div>
+    </main>
+
+    <span class="up"><i class='fas fa-angle-double-up' style='font-size:20px'></i></span>
+
+
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="row">
+          <div class="footer-inner-container">
+            <h6>About</h6>
+            <p class=" text-justify">Our Ecommerce Website offers a wide range of products from various categories like Electronics, Cosmetics and Body Care, Food and Beverage, Furniture and Decor, Health and Wellness, Household Items, Media, Pet Care, Office Equipment, and more. We provide a user-friendly and secure platform for customers to shop from the comfort of their homes. </p>
+          </div>
+  
+          <div class="footer-inner-container">
+            <h6>Categories</h6>
+            <ul class="footer-links">
+              {% if categories %} {% for category in categories %}
+                  <li>
+                    <a href="/search/?category={{category.id}}"
+                      >{{category.name}}</a
+                    >
+                  </li>
+                  {% endfor %} {% endif %}
+            </ul>
+          </div>
+  
+          <div class="footer-inner-container">
+            <h6>Quick Links</h6>
+            <ul class="footer-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/shop">Shop</a></li>
+              <li><a href="/cart">Cart</a></li>
+              <li><a href="/">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="footer-container">
+        <div class="row">
+          <div class="copyrightcontainer">
+            <p class=" copyright-text">Copyright &copy; 2023 All Rights Reserved by AA
+            </p>
+          </div>
+          <div class="footer-icons">
+            <ul class="social-icons">
+              <li><a class="facebook" href="https://github.com/abhiCrackerOfficial/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+              <li><a class="twitter" href="https://github.com/iamamritpalrandhawa/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+              {% comment %} <li><a class="dribbble" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-dribbble"></i></a></li>
+              <li><a class="linkedin" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-linkedin"></i></a></li> {% endcomment %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+
+    <script src="{% static 'JS/main.js' %}"></script>
+    <script src="{% static 'JS/profilejs.js' %}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>    $(function () {
+        const messageElem = $("#message > div");
+        if (messageElem.hasClass("error")) {
+            messageElem.addClass("invalid-input");
+        } else if (messageElem.hasClass("success")) {
+            messageElem.addClass("success-input");
+        }
+    
+        messageElem.animate(
+            {
+                right: 0,
+            },
+            1000,
+            function() {
+                $(this).delay(2000).fadeOut();
+            }
+        );
+    });
+  
+    
+
+
+var upButtons = document.querySelectorAll('.up');
+
+upButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+window.addEventListener('scroll', () => {
+    upButtons.forEach(button => {
+        if (window.pageYOffset > 200) {
+            button.style.visibility = 'visible';
+        } else {
+            button.style.visibility = 'hidden';
+        }
+    });
+});
+  
+  
+  
+  </script>
+</body>
+
+</html>

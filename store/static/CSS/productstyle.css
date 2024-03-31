@@ -1,0 +1,231 @@
+.main {
+    background-color: #F5F5F5;
+    width: auto;
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.leftcontent {
+    display: inline-block;
+    background-color: #fff;
+    height: 500px;
+    width: 600px;
+    margin-right: 45px;
+}
+
+.rightcontent {
+
+    display: inline-block;
+    background-color: #fff;
+    height: 500px;
+    width: 600px;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.product-heading {
+    font-weight: bold;
+    font-size: 28px;
+    margin: 9px 0;
+}
+
+.productdesc {
+    font-size: 17px;
+    margin-top: 9px;
+    margin-bottom: 15px;
+}
+
+.productprice {
+    font-weight: bolder;
+    font-size: 24px;
+    margin-top: 9px;
+    margin-bottom: 15px;
+}
+
+.size {
+    margin-top: 9px;
+    margin-bottom: 25px;
+}
+
+.size input {
+    width: 16px;
+    height: 16px;
+    margin: 0 8px;
+}
+
+.size label {
+    font-size: 16px;
+}
+
+.incdec {
+    margin-right: 20px;
+}
+
+#decrement,
+#increment {
+    width: 35px;
+    height: 35px;
+    background-color: var(--main-color);
+    color: black;
+    font-size: 19px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+#number {
+    width: 35px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+}
+
+.cardbtn {
+    width: 180px;
+    height: 40px;
+    background-color: var(--main-color);
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
+    display: inline-flex;
+    justify-content: space-evenly;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.cardbtn:hover {
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+}
+
+
+.slider {
+    position: relative;
+    height: 500px;
+    width: 600px;
+    overflow: hidden;
+}
+
+.slider img {
+    background-size: contain;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 500px;
+    width: 600px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    line-height: 50px;
+    cursor: pointer;
+}
+
+.arrow.prev {
+    left: 10px;
+}
+
+.arrow.next {
+    right: 10px;
+}
+
+
+.productheading {
+    padding: 0 30px;
+}
+
+.invalid-input {
+    padding: 10px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+}
+
+.success-input {
+    padding: 10px;
+    background-color: #6bdd4e;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+}
+
+.info-input {
+    padding: 10px;
+    background-color: #151fe7;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+}
+
+.up {
+    position: fixed;
+    right: 40px;
+    bottom: 30px;
+    padding: 15px;
+    background-color: var(--main-color);
+    cursor: pointer;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    animation: updown 1s ease-in-out infinite alternate;
+}
+
+.up:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+@keyframes updown {
+    from {
+        bottom: 30px;
+    }
+
+    to {
+        bottom: 40px;
+    }
+
+}

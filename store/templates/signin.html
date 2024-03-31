@@ -1,0 +1,255 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ecommerce Login</title>
+</head>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-image: url("{% static 'imgs/bg1.jpg' %}");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow: hidden;
+    /* added to make the background image cover the full page */
+  }
+
+  .icon {
+    display: block;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 20%;
+    height: 13%;
+  }
+
+  .container {
+    background: rgba(247, 244, 244, 0.521);
+    border-radius: 10px;
+    backdrop-filter: blur(6px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    color: black;
+    margin: 5% auto;
+    margin-top: 3%;
+    width: 90%;
+    max-width: 25em;
+    /* changed from 350px to 25em */
+    padding: 1.25em;
+    /* changed from 20px to 1.25em */
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.5em;
+    /* changed from 24px to 1.5em */
+    margin-bottom: 1.25em;
+    /* changed from 20px to 1.25em */
+  }
+
+  label {
+    display: block;
+    font-size: 0.875em;
+    /* changed from 14px to 0.875em */
+    margin-bottom: 0.5em;
+    /* changed from 8px to 0.5em */
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.625em;
+    /* changed from 10px to 0.625em */
+    margin-bottom: 1.25em;
+    /* changed from 20px to 1.25em */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    /* added to make the font size consistent */
+  }
+
+  input[type="submit"] {
+    width: 100%;
+    padding: 0.625em;
+    /* changed from 10px to 0.625em */
+    background-color: #f9a825;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    /* added to make the font size consistent */
+  }
+
+  input[type="submit"]:hover {
+    box-shadow: 0 4px 4px rgba(22, 22, 22, 0.884);
+  }
+
+  form {
+    border: 2px solid transparent;
+  }
+
+  /* media query for smaller screens */
+  @media (max-width: 480px) {
+    .container {
+      margin: 10% auto;
+      width: 80%;
+    }
+  }
+
+  .invalid-input {
+    padding: 10px;
+    background-color: #e74c3c;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+  }
+
+  .success-input {
+    padding: 10px;
+    background-color: #6bdd4e;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+  }
+
+  .info-input {
+    padding: 10px;
+    background-color: #151fe7;
+    color: #fff;
+    font-size: 20px;
+    width: 400px;
+    text-align: center;
+    position: absolute;
+    top: 80px;
+    right: -630px;
+    z-index: 9999;
+  }
+</style>
+
+<body>
+  <img class="icon" src="{% static 'logo/black.png' %}" />
+  {% if messages %}
+  <div id="message">
+    {% for message in messages %}
+    <div class="{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <div class="container">
+    <form action="/signin/" method="post">
+      <h1>Sign In</h1>
+      {% csrf_token %}
+      <label for="email">Email</label>
+      <input pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}" type="email" id="email" name="email"
+        required />
+      <label for="password">Password</label>
+      <input minlength="6" type="password" id="password" name="password" required />
+      <div class="g-recaptcha" data-sitekey="6LeocNslAAAAAMYxED2tAgqHG7r1CSf0XCiuHBmh"></div><br>
+      <label for="extras">
+        <a href="/forgot_password" onmouseover="this.style.textDecoration='underline'"
+          onmouseout="this.style.textDecoration='none'" style="
+              text-decoration: none;
+              float: right;
+              margin-bottom: 1.3em;
+              color: black;
+            ">Forgot password?</a>
+        <a href="/signup" onmouseover="this.style.textDecoration='underline'"
+          onmouseout="this.style.textDecoration='none'" style="
+              text-decoration: none;
+              float: left;
+              margin-bottom: 1.3em;
+              color: black;
+            ">Create an Account</a></label>
+      
+      <input id="submit" type="submit" value="Sign In" />
+    </form>
+  </div>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+  $(function () {
+    const messageElem = $("#message > div");
+    if (messageElem.hasClass("error")) {
+      messageElem.addClass("invalid-input");
+    } else if (messageElem.hasClass("success")) {
+      messageElem.addClass("success-input");
+    }
+
+    messageElem.animate(
+      {
+        right: 0,
+      },
+      1000,
+      function () {
+        if (messageElem.hasClass("success-input")) {
+          $(this)
+            .delay(2000)
+            .fadeOut(function () {
+              // Redirect to the home page after 2 seconds
+              window.location.href = "{% url 'home' %}";
+            });
+        } else {
+          $(this).delay(2000).fadeOut();
+        }
+      }
+    );
+  });
+
+  function enableSubmitButton() {
+    function validateEmail(email) {
+      const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+      return emailRegex.test(email);
+    }
+    const form = document.querySelector("form");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const submitButton = document.getElementById("submit");
+
+    form.addEventListener("input", () => {
+      if (
+        validateEmail(emailInput.value.trim()) &&
+        passwordInput.checkValidity()
+      ) {
+        submitButton.disabled = false;
+      } else {
+        emailInput.addEventListener("blur", () => {
+          if (!validateEmail(emailInput.value.trim())) {
+            emailInput.setCustomValidity("");
+            emailInput.reportValidity();
+          } else {
+            emailInput.setCustomValidity("");
+          }
+        });
+        passwordInput.addEventListener("blur", () => {
+          if (!passwordInput.checkValidity()) {
+            passwordInput.reportValidity();
+          }
+        });
+        submitButton.disabled = true;
+      }
+    });
+  }
+  enableSubmitButton();
+</script>
+
+</html>

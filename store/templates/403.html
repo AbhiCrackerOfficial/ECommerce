@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>403 Forbidden</title>
+
+    <style>
+      html {
+        background: black;
+      }
+
+      .box {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        background: none;
+        margin-right: auto;
+        margin-left: 20%;
+        border: 3px solid black;
+      }
+
+      .head {
+        position: absolute;
+        width: 50px;
+        height: 70px;
+        background: white;
+        top: 30%;
+        left: 20%;
+        border-radius: 50%;
+
+        border: 3px solid white;
+        transform: rotate(-7deg);
+      }
+
+      .eyer {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        background: white;
+        top: 28%;
+        left: 70%;
+        border-radius: 50%;
+        border: 3px solid black;
+      }
+
+      .eyel {
+        position: absolute;
+        width: 7px;
+        height: 7px;
+        background: white;
+        top: 32%;
+        left: 23%;
+        border-radius: 50%;
+        border: 3px solid black;
+      }
+
+      .smile {
+        position: absolute;
+        top: 78%;
+        left: 36%;
+        width: 26px;
+        height: 24px;
+        border: solid 3px #000;
+        border-color: transparent transparent black;
+        border-radius: 100px/10% 30% 70px 70px;
+        transform: rotate(170deg);
+      }
+
+      .body {
+        position: absolute;
+        top: 43%;
+        left: 29%;
+        width: 100px;
+        height: 120px;
+
+        border: solid 3px black;
+        border-color: transparent transparent white;
+        border-radius: 0px/100% 100% 170px 170px;
+        transform: rotate(90deg);
+      }
+
+      .body1 {
+        position: absolute;
+        top: 54%;
+        left: 18%;
+
+        background: white;
+        width: 97px;
+        height: 7px;
+        border: solid 3px #000;
+        border-color: transparent transparent white;
+        transform: rotate(-97deg);
+        border-radius: 50%;
+      }
+
+      .handr1 {
+        position: absolute;
+        top: 46%;
+        left: 27%;
+
+        background: white;
+        width: 47px;
+        height: 7px;
+        border: solid 3px #000;
+        border-color: transparent transparent white;
+        transform: rotate(-166deg);
+        border-radius: 50%;
+      }
+
+      .handr2 {
+        position: absolute;
+        top: 49.5%;
+        left: 27%;
+
+        background: white;
+        width: 47px;
+        height: 7px;
+        border: solid 3px black;
+        border-color: transparent transparent white;
+        transform: rotate(-31deg);
+        border-radius: 50%;
+      }
+
+      .handl1 {
+        position: absolute;
+        top: 46%;
+        left: 17%;
+
+        background: white;
+        width: 47px;
+        height: 7px;
+        border: solid 3px #000;
+        border-color: transparent transparent white;
+        transform: rotate(166deg);
+        border-radius: 50%;
+      }
+
+      .handl2 {
+        position: absolute;
+        top: 49.5%;
+        left: 17%;
+
+        background: white;
+        width: 47px;
+        height: 7px;
+        border: solid 3px black;
+        border-color: transparent transparent white;
+        transform: rotate(31deg);
+        border-radius: 50%;
+      }
+
+      .legr {
+        position: absolute;
+        top: 73%;
+        left: 20%;
+
+        background: white;
+        width: 97px;
+        height: 7px;
+        border: solid 3px #000;
+        border-color: transparent transparent white;
+        transform: rotate(-97deg);
+        border-radius: 50%;
+      }
+
+      .legl {
+        position: absolute;
+        top: 74%;
+        left: 18%;
+
+        background: white;
+        width: 97px;
+        height: 7px;
+        border: solid 3px #000;
+        border-color: transparent transparent white;
+        transform: rotate(-97deg);
+        border-radius: 50%;
+      }
+
+      .feetr {
+        position: absolute;
+        top: 80.5%;
+        left: 34%;
+        background: white;
+
+        height: 27px;
+        width: 8px;
+        background-color: white;
+        border-bottom-left-radius: 50px;
+        border-top-right-radius: 50px;
+        transform: rotate(-83deg);
+      }
+
+      .feetl {
+        position: absolute;
+        top: 81.5%;
+        left: 32%;
+        background: white;
+        height: 27px;
+        width: 8px;
+        background-color: white;
+        border-bottom-left-radius: 50px;
+        border-top-right-radius: 50px;
+        transform: rotate(-80deg);
+      }
+
+      h2 {
+        position: absolute;
+        top: 20%;
+        right: -50%;
+        color: red;
+        font-size: 50px;
+      }
+
+      p {
+        position: absolute;
+        top: 40%;
+        right: -50%;
+        color: red;
+        font-size: 20px;
+      }
+
+      h1 {
+        position: absolute;
+        top: 20%;
+        left: 33%;
+        color: white;
+        font-size: 50px;
+        transform: rotate(-38deg);
+        animation: blink 0.8s infinite ease;
+      }
+
+      @keyframes blink {
+        0% {
+          opacity: 0;
+        }
+
+        100% {
+          opacity: 1;
+        }
+      }
+      a {
+        text-decoration: none;
+        color: red;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="box">
+      <div class="head">
+        <div class="eyer"></div>
+        <div class="eyel"></div>
+        <div class="smile"></div>
+      </div>
+      <div class="handr1"></div>
+      <div class="handr2"></div>
+      <div class="handl1"></div>
+      <div class="handl2"></div>
+      <div class="body1"></div>
+      <div class="body"></div>
+      <div class="legr"></div>
+      <div class="legl"></div>
+      <div class="feetr"></div>
+      <div class="feetl"></div>
+
+      <h2>403 Forbidden Error</h2>
+      <p>You don't have permission to access directly. <br>Redirecting to Home in 5s. <a href="/">Click Here for manual</p>
+      <h1>?</h1>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      setTimeout(function () {
+        window.location.href = "/";
+      }, 5000);
+    });
+  </script>
+</html>

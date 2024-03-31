@@ -1,0 +1,187 @@
+.main {
+    width: auto;
+    height: auto;
+    background-color: #f5f5f5;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 50px;
+    flex-wrap: wrap;
+}
+
+.details {
+    display: inline-flex;
+    flex-direction: column;
+    background-color: #fff;
+    width: 610px;
+    height: 450px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.totalpayment {
+    width: 450px;
+    height: auto;
+}
+
+.totalcheck {
+    display: inline-block;
+    position: relative;
+    /* bottom: 50px; */
+    background-color: #fff;
+    width: 420px;
+    height: 350px;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.payment {
+    display: inline-block;
+    position: relative;
+    /* bottom: 50px; */
+    background-color: #fff;
+    width: 420px;
+    height: 255px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.radio {
+    display: block;
+    margin: 18px 0;
+}
+
+
+input[type="radio"] {
+    margin: 10px 0;
+    margin-right: 8px;
+}
+
+
+
+.cardtotal {
+    display: inline-flex;
+    justify-content: space-between;
+    font-size: 15.4px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    margin-top: 2px;
+}
+
+
+.line {
+    display: inline-block;
+    position: relative;
+    content: "";
+    width: 20vw;
+    height: 3px;
+    left: 5px;
+    /* top: 2px; */
+    z-index: 1;
+    margin-top: 8px;
+    border-top: 2.5px dashed black;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.allprices,
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 35px;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0px 8px;
+    margin: 12px 0;
+}
+
+hr {
+    margin-top: 15px;
+}
+
+.btntotal {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 45px;
+    background-color: var(--main-color);
+    color: var(--secondary-color);
+    font-size: 18px;
+    font-weight: bold;
+
+}
+
+.label {
+    width: 45%;
+
+
+}
+
+label {
+    display: block;
+    margin: 5px 0;
+}
+
+.address,
+.citystate,
+.zipphone {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+input[type="text"] {
+    height: 35px;
+    width: 250px;
+    font-size: 15px;
+    padding: 10px;
+}
+
+
+.line2 {
+    display: inline-block;
+    position: relative;
+    content: "";
+    width: 40vw;
+    height: 3px;
+    left: 5px;
+    /* top: 3px; */
+    z-index: 1;
+    margin-top: 8px;
+    border-top: 2.5px dashed black;
+    transition: border-color 0.2s ease-in-out;
+}
+
+
+
+
+.up {
+    position: fixed;
+    right: 40px;
+    bottom: 30px;
+    padding: 15px;
+    background-color: var(--main-color);
+    cursor: pointer;
+    visibility: hidden;
+    transition: all 0.3s ease-in-out;
+    animation: updown 1s ease-in-out infinite alternate;
+}
+
+.up:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+
+@keyframes updown {
+    from {
+        bottom: 30px;
+    }
+
+    to {
+        bottom: 40px;
+    }
+
+}

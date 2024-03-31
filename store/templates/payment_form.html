@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PayU Payment</title>
+</head>
+<body>
+    <h1>PayU Payment</h1>
+    {% csrf_token %}
+    <form action="https://secure.payu.in/_payment" method="post">
+        <input type="hidden" name="key" value="{{ payu_data.key }}">
+        <input type="hidden" name="txnid" value="{{ payu_data.txnid }}">
+        <input type="hidden" name="amount" value="{{ payu_data.amount }}">
+        <input type="hidden" name="productinfo" value="{{ payu_data.productinfo }}">
+        <input type="hidden" name="firstname" value="{{ payu_data.firstname }}">
+        <input type="hidden" name="email" value="{{ payu_data.email }}">
+        <input type="hidden" name="phone" value="{{ payu_data.phone }}">
+        <input type="hidden" name="surl" value="{{ payu_data.surl }}">
+        <input type="hidden" name="furl" value="{{ payu_data.furl }}">
+        <input type="hidden" name="hash" value="{{ payu_data.hash }}">
+        <input type="hidden" name="service_provider" value="payu_paisa">
+        <button type="submit">Proceed to Pay</button>
+    </form>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelector('form').submit();
+    });
+</script>
+</html>

@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+{%load static%}{% csrf_token %}
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/productstyle.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+      integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <title>Product Detail</title>
+  </head>
+
+  <body>
+    <header>
+      <nav class="outernav">
+        <nav class="navbar">
+          <div class="head-option">
+            <i class="fa fa-bars" id="internalmenu"></i>
+            <span class="heading"
+                ><a href="/"><img src="{% static 'logo/logo.png' %}" /><img
+                  id="text-logo"
+                  src="{% static 'logo/text.png' %}"
+              /></a></span>
+          </div>
+          <form id="search-form" action="{% url 'search' %}" method="get">
+            <div class="search">
+              <input type="text" name="search" id="search" placeholder="Search for products" style="border: none; border-right: 1px solid black" />
+              <div class="srhicon" >
+                <i class="fa fa-search" onclick="search()" style="font-size: 20px"></i>
+              </div>
+            </div>
+          </form>
+          
+          <div class="account" id="account">
+            {% if fname %} Welcome,{{fname}} {% else %} My Account {% endif%}
+            <i class="fa fa-caret-down"></i>
+  
+            <div class="sign" id="sign">
+              <ul>
+                {% if fname %}
+                <a style="text-decoration: none; color:black;" href="/profile"><li>Profile</li></a>
+                <hr />
+                <a style="text-decoration: none; color:black;" href="/logout/"><li> Sign out</li></a>
+                {% else %}
+                <li><a style="text-decoration: none; color:black;" href="/signin/"> Sign in</a></li>
+                <hr />
+                <li><a style="text-decoration: none; color:black;" href="/signup/"> Sign up</a></li>
+                {% endif %}
+              </ul>
+            </div>
+          </div>
+          <div class="optionlogo">
+            <a href="/cart">
+              <i class="fa fa-shopping-cart"></i>
+              <span>0</span>
+            </a>
+          </div>
+        </nav>
+        <div id="searchid">
+          <input type="text" name="search" id="search" placeholder="Search for products"
+            style="border: none; border-right: 1px solid black" />
+          <div class="srhicon">
+            <i class="fa fa-search" style="font-size: 20px"></i>
+          </div>
+        </div>
+        <nav class="addtionalnav" id="addnav">
+          <div class="optioncategory">
+            <div class="checklogin">
+              <a href="#">
+                <i class="fa fa-user-circle-o"></i>
+                <span class="checksignin">{% if fname %} {{fname}} {% else %} Sign in {% endif %}</span>
+                <span class="checksignout">Sign out</span>
+              </a>
+            </div>
+            <div class="container" id="dropmenu">
+              <div class="innercontainer">
+                <i class="fa fa-bars"></i>
+                <span>CATEGORY</span>
+              </div>
+              <i class="fa fa-caret-down"></i>
+              <div class="options-menus" id="menu">
+                <ul>
+                  {% if categories %} {% for category in categories %}
+                  <li>
+                    <a href="/search/?category={{category.id}}"
+                      >{{category.name}}</a
+                    >
+                  </li>
+                  {% endfor %} {% endif %}
+                </ul>
+              </div>
+            </div>
+            <div class="options">
+              <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/shop">Shop</a></li>
+                <li><a href="/cart">Cart</a></li>
+                <li id="drop" style="display: none;">
+                  Pages
+                  <i class="fa fa-caret-down" style="color: #fff; padding: 5px"></i>
+                  <div class="options-drop" id="drop-down">
+                    <a href="">Page 1</a>
+                    <a href="">Page 2</a>
+                  </div>
+                </li>
+                <li><a href="/">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+  
+          <div class="optionlogo">
+            <a href="/cart">
+              <i class="fa fa-shopping-cart"></i>
+              <span>{% if count %} {{count}} {% else %} 0 {% endif %}</span>
+            </a>
+          </div>
+          <div class="close" id="close">
+            <i class="fa fa-close"></i>
+          </div>
+        </nav>
+      </nav>
+    </header>
+
+
+    <main class="main">
+      <div class="leftcontent">
+        <div class="slider">
+          <img class="slide" src="{{product.image.url}}" />
+          <div class="arrow prev">&#8249;</div>
+          <div class="arrow next">&#8250;</div>
+        </div>
+      </div>
+      <div class="rightcontent">
+        <h1 class="product-heading inline-block">{{product.name}}</h1>
+        <p class="productdesc ">{{product.description}}</p>
+
+        <h3 class="productprice ">₹{{product.price}}</h3>
+
+        <!-- <div class="size">
+          <span style="font-weight: bold; font-size: 16px; margin-right: 8px"
+            >SIZE:
+          </span>
+          <input type="radio" name="size" />
+          <label for="xs">XS</label>
+          <input type="radio" name="size" />
+          <label for="s">S</label>
+          <input type="radio" name="size" />
+          <label for="M">M</label>
+          <input type="radio" name="size" />
+          <label for="l">L</label>
+          <input type="radio" name="size" />
+          <label for="xl">XL</label>
+        </div> -->
+
+        <!-- <div class="incdec inline-block">
+          <button id="decrement">-</button>
+          <span id="number">1</span>
+          <button id="increment">+</button>
+        </div> -->
+
+        <div class="cardbtn inline-block" data-product-id="{{ product.id }}">
+          <i class="fa fa-shopping-cart" style="font-size: 18px"></i>
+          <span style="display:inline-block;"> ADD TO CART</span>
+        </div>
+      </div>
+    </main>
+
+    <div class="productheading">
+      <span>YOU MAY ALSO LIKE</span>
+      <span class="line"></span>
+    </div>
+    <div class="card-slider">
+      <div class="cards-container">
+        {% if same_products %} {% for product in same_products%}
+        <div class="card">
+          <div class="product-img">
+            <img src="{{ product.image.url }}" alt="{{product.image}}" />
+            <div class="product-card-btns">
+              <span class="product-card-btn">
+                <i
+                  class="fa fa-shopping-cart"
+                  data-product-id="{{ product.id }}"
+                  style="font-size: 20px"
+                ></i>
+              </span>
+              <span class="product-card-btn">
+                <i
+                  class="fa fa-search"
+                  data-product-id="{{ product.id }}"
+                  style="font-size: 20px"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="product-content">
+            <h3>{{product.name}}</h3>
+          <p>₹{{product.price}}</p>
+          </div>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+      <div class="slider-controls">
+        <button class="slider-btn left-btn" id="prevBtn">
+          <i class="fa fa-chevron-left"></i>
+        </button>
+        <button class="slider-btn right-btn" id="nextBtn">
+          <i class="fa fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+
+    <span class="up"
+      ><i class="fas fa-angle-double-up" style="font-size: 20px"></i
+    ></span>
+    <!-- Site footer -->
+    <footer class="site-footer">
+      <div class="footer-container">
+        <div class="row">
+          <div class="footer-inner-container">
+            <h6>About</h6>
+            <p class=" text-justify">Our Ecommerce Website offers a wide range of products from various categories like Electronics, Cosmetics and Body Care, Food and Beverage, Furniture and Decor, Health and Wellness, Household Items, Media, Pet Care, Office Equipment, and more. We provide a user-friendly and secure platform for customers to shop from the comfort of their homes. </p>
+          </div>
+  
+          <div class="footer-inner-container">
+            <h6>Categories</h6>
+            <ul class="footer-links">
+              {% if categories %} {% for category in categories %}
+                  <li>
+                    <a href="/search/?category={{category.id}}"
+                      >{{category.name}}</a
+                    >
+                  </li>
+                  {% endfor %} {% endif %}
+            </ul>
+          </div>
+  
+          <div class="footer-inner-container">
+            <h6>Quick Links</h6>
+            <ul class="footer-links">
+              <li><a href="/">Home</a></li>
+              <li><a href="/shop">Shop</a></li>
+              <li><a href="/cart">Cart</a></li>
+              <li><a href="/">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="footer-container">
+        <div class="row">
+          <div class="copyrightcontainer">
+            <p class=" copyright-text">Copyright &copy; 2023 All Rights Reserved by AA
+            </p>
+          </div>
+          <div class="footer-icons">
+            <ul class="social-icons">
+              <li><a class="facebook" href="https://github.com/abhiCrackerOfficial/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+              <li><a class="twitter" href="https://github.com/iamamritpalrandhawa/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+              {% comment %} <li><a class="dribbble" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-dribbble"></i></a></li>
+              <li><a class="linkedin" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-linkedin"></i></a></li> {% endcomment %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+  
+  
+  
+
+
+
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script src="{% static 'JS/main.js' %}"></script>
+  <script src="{% static 'JS/productjs.js' %}"></script>
+  <script>
+    function addToCart(element) {
+      // const productId = element.dataset.productId;
+      const productId = element.getAttribute("data-product-id");
+      console.log(productId);
+      const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+      fetch(`/add_to_cart/${productId}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({ quantity: 1 }),
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          throw new Error("Error adding product to cart");
+        })
+        .then((data) => {
+          // Update cart count or show a message to the user
+          console.log("Product added to cart");
+          // Refresh the page after updating the cart
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+          // Refresh the page after catching an error
+          window.location.reload();
+        });
+    }
+  document.addEventListener("DOMContentLoaded", () => {
+    const addToCartButtons = document.querySelectorAll(
+      ".product-card-btn .fa-shopping-cart"
+    
+    );
+
+    addToCartButtons.forEach((button) => {
+      button.addEventListener("click", (event) => {
+        addToCart(event.currentTarget);
+      });
+    });
+
+    // New event handler for product-card-btn click event
+    const productCardButtons = document.querySelectorAll(
+      ".product-card-btn .fa-search"
+    );
+
+    productCardButtons.forEach((button) => {
+      button.addEventListener("click", function (event) {
+        const productId = event.currentTarget.getAttribute("data-product-id");
+        console.log("productId:", productId);
+        const newUrl = `/product/${productId}`;
+        window.location.href = newUrl;
+      });
+    });
+  });
+  document.addEventListener("DOMContentLoaded", () => {
+  const addToCartB = document.querySelectorAll(".cardbtn");
+
+  addToCartB.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      addToCart(event.currentTarget);
+    });
+  });
+});
+
+
+
+var upButtons = document.querySelectorAll('.up');
+
+upButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+});
+
+window.addEventListener('scroll', () => {
+    upButtons.forEach(button => {
+        if (window.pageYOffset > 200) {
+            button.style.visibility = 'visible';
+        } else {
+            button.style.visibility = 'hidden';
+        }
+    });
+});
+  </script>
+</html>

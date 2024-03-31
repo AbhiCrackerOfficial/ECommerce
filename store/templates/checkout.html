@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+{% load static %}{% load math_filters %}{% csrf_token %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'CSS/style.css' %}" />
+  <link rel="stylesheet" href="{% static 'CSS/checkoutstyle.css' %}" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <title>Checkout</title>
+</head>
+
+<body>
+  <header>
+    <nav class="outernav">
+      <nav class="navbar">
+        <div class="head-option">
+          <i class="fa fa-bars" id="internalmenu"></i>
+          <span class="heading"><a href="/"><img src="{% static 'logo/logo.png' %}" /><img id="text-logo"
+                src="{% static 'logo/text.png' %}" /></a></span>
+        </div>
+        <form id="search-form" action="{% url 'search' %}" method="get">
+          <div class="search">
+            <input type="text" name="search" id="search" placeholder="Search for products"
+              style="border: none; border-right: 1px solid black" />
+            <div class="srhicon">
+              <i class="fa fa-search" onclick="search()" style="font-size: 20px"></i>
+            </div>
+          </div>
+        </form>
+
+        <div class="account" id="account">
+          {% if fname %} Welcome,{{fname}} {% else %} My Account {% endif%}
+          <i class="fa fa-caret-down"></i>
+
+          <div class="sign" id="sign">
+            <ul>
+              {% if fname %}
+              <a style="text-decoration: none; color:black;" href="/profile">
+                <li>Profile</li>
+              </a>
+              <hr style="margin-top:0;" />
+              <a style="text-decoration: none; color:black;" href="/logout/">
+                <li> Sign out</li>
+              </a>
+              {% else %}
+              <li><a style="text-decoration: none; color:black;" href="/signin/"> Sign in</a></li>
+              <hr style="margin-top:0;" />
+              <li><a style="text-decoration: none; color:black;" href="/signup/"> Sign up</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        <div class="optionlogo">
+          <a href="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span>0</span>
+          </a>
+        </div>
+      </nav>
+      <div id="searchid">
+        <input type="text" name="search" id="search" placeholder="Search for products"
+          style="border: none; border-right: 1px solid black" />
+        <div class="srhicon">
+          <i class="fa fa-search" style="font-size: 20px"></i>
+        </div>
+      </div>
+      <nav class="addtionalnav" id="addnav">
+        <div class="optioncategory">
+          <div class="checklogin">
+            <a href="#">
+              <i class="fa fa-user-circle-o"></i>
+              <span class="checksignin">{% if fname %} {{fname}} {% else %} Sign in {% endif %}</span>
+              <span class="checksignout">Sign out</span>
+            </a>
+          </div>
+          <div class="container" id="dropmenu">
+            <div class="innercontainer">
+              <i class="fa fa-bars"></i>
+              <span>CATEGORY</span>
+            </div>
+            <i class="fa fa-caret-down"></i>
+            <div class="options-menus" id="menu">
+              <ul>
+                {% if categories %} {% for category in categories %}
+                <li>
+                  <a href="/search/?category={{category.id}}">{{category.name}}</a>
+                </li>
+                {% endfor %} {% endif %}
+              </ul>
+            </div>
+          </div>
+          <div class="options">
+            <ul>
+              <li><a href="/">Home</a></li>
+              <li><a href="/shop">Shop</a></li>
+              <li><a href="/cart">Cart</a></li>
+              <li id="drop" style="display: none;">
+                Pages
+                <i class="fa fa-caret-down" style="color: #fff; padding: 5px"></i>
+                <div class="options-drop" id="drop-down">
+                  <a href="">Page 1</a>
+                  <a href="">Page 2</a>
+                </div>
+              </li>
+              <li><a href="/">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="optionlogo">
+          <a href="/cart">
+            <i class="fa fa-shopping-cart"></i>
+            <span>{% if count %} {{count}} {% else %} 0 {% endif %}</span>
+          </a>
+        </div>
+        <div class="close" id="close">
+          <i class="fa fa-close"></i>
+        </div>
+      </nav>
+    </nav>
+  </header>
+
+
+  <main class="main">
+
+    <div class="details">
+      <div class="cardtotal">
+        <span>Shipping/Billing</span>
+        <span class="line2"></span>
+      </div>
+      <div class="address">
+        <div class="label">
+          <label for="address1">ADDRESS LINE 1</label>
+          <input required type="text" name="address1" placeholder="123 Street" value="{{street}}">
+        </div>
+      </div>
+      <div class="citystate">
+        <div class="label">
+          <label for="city">CITY</label>
+          <input required type="text" name="city" placeholder="City" value="{{city}}">
+        </div>
+        <div class="label">
+          <label for="state">STATE</label>
+          <input required type="text" name="state" placeholder="State" value="{{state}}">
+        </div>
+      </div>
+      <div class="zipphone">
+        <div class="label">
+          <label for="zip">ZIP</label>
+          <input required type="text" name="zip" placeholder="Zip" value="{{zipcode}}">
+        </div>
+        <div class="label">
+          <label for="phone">PHONE</label>
+          <input required type="text" name="phone" placeholder="Phone" value="{{phone}}">
+        </div>
+
+      </div>
+    </div>
+
+    <div class="totalpayment" style="height: auto;">
+      <div class="totalcheck" style="height: auto;">
+        <div class="cardtotal">
+          <span>Cart Check</span>
+          <span class="line"></span>
+        </div>
+
+        {% if citems %} {% for item in citems %}
+        <div class="allprices">
+          <span>{{item.product.name}} x {{item.quantity}}</span>
+          <span class="subtotal">{{ item.product.price|multiply:item.quantity }}</span>
+        </div>
+        {%endfor%} {%endif%}
+        <hr>
+        <div class="total">
+          <span>Total</span>
+          <span class="maintotal">RS. {{cart_total}}/-</span>
+        </div>
+      </div>
+      <div class="payment">
+        <div class="cardtotal">
+          <span>Cart Check</span>
+          <span class="line"></span>
+        </div>
+        <div class="radio">
+          <input required type="radio" name="payment" value="COD">COD (Cash On Delivery)<br>
+          <input required type="radio" name="payment" value="PayU">PayU Money<br>
+        </div>
+        <div class="btntotal">Complete Order</div>
+      </div>
+    </div>
+
+  </main>
+
+  <span class="up"><i class='fas fa-angle-double-up' style='font-size:20px'></i></span>
+
+
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="row">
+        <div class="footer-inner-container">
+          <h6>About</h6>
+          <p class=" text-justify">Our Ecommerce Website offers a wide range of products from various categories like Electronics, Cosmetics and Body Care, Food and Beverage, Furniture and Decor, Health and Wellness, Household Items, Media, Pet Care, Office Equipment, and more. We provide a user-friendly and secure platform for customers to shop from the comfort of their homes. </p>
+        </div>
+
+        <div class="footer-inner-container">
+          <h6>Categories</h6>
+          <ul class="footer-links">
+            {% if categories %} {% for category in categories %}
+                <li>
+                  <a href="/search/?category={{category.id}}"
+                    >{{category.name}}</a
+                  >
+                </li>
+                {% endfor %} {% endif %}
+          </ul>
+        </div>
+
+        <div class="footer-inner-container">
+          <h6>Quick Links</h6>
+          <ul class="footer-links">
+            <li><a href="/">Home</a></li>
+            <li><a href="/shop">Shop</a></li>
+            <li><a href="/cart">Cart</a></li>
+            <li><a href="/">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="footer-container">
+      <div class="row">
+        <div class="copyrightcontainer">
+          <p class=" copyright-text">Copyright &copy; 2023 All Rights Reserved by AA
+          </p>
+        </div>
+        <div class="footer-icons">
+          <ul class="social-icons">
+            <li><a class="facebook" href="https://github.com/abhiCrackerOfficial/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+            <li><a class="twitter" href="https://github.com/iamamritpalrandhawa/" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-github"></i></a></li>
+            {% comment %} <li><a class="dribbble" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-dribbble"></i></a></li>
+            <li><a class="linkedin" href="#" style="display: flex;justify-content: center;align-items: center;"><i class="fa fa-linkedin"></i></a></li> {% endcomment %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+<script src="{% static 'JS/main.js' %}"></script>
+<script>
+  // Get the Complete Order button and the form inputs
+  const completeOrderButton = document.querySelector('.btntotal');
+  const address1Input = document.querySelector('input[name="address1"]');
+  const cityInput = document.querySelector('input[name="city"]');
+  const stateInput = document.querySelector('input[name="state"]');
+  const zipInput = document.querySelector('input[name="zip"]');
+  const phoneInput = document.querySelector('input[name="phone"]');
+  const paymentOptions = document.querySelectorAll('input[name="payment"]');
+  var cartTotal = {{ cart_total }};
+  completeOrderButton.addEventListener('click', async () => {
+    // Check if any payment option is selected
+    const selectedPaymentOption = Array.from(paymentOptions).find(option => option.checked);
+
+    if (!selectedPaymentOption) {
+      alert('Please select a payment option');
+      return;
+    }
+
+    // Create a FormData object to store the form data
+    const formData = new FormData();
+    formData.append('address1', address1Input.value);
+    formData.append('city', cityInput.value);
+    formData.append('state', stateInput.value);
+    formData.append('zip', zipInput.value);
+    formData.append('phone', phoneInput.value);
+    formData.append('payment', selectedPaymentOption.value);
+    formData.append('amount', cartTotal);
+
+    // Get CSRF token
+    const csrfToken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+
+    // Send a POST request to /order_confirmation with the form data
+    try {
+      const response = await fetch('/order_confirmation/', {
+        method: 'POST',
+        headers: {
+          "X-CSRFToken": csrfToken,
+        },
+        body: formData,
+      });
+
+      // If the request is successful, redirect to the order confirmation page
+      if (response.status == 200) {
+        window.location.href = '/';
+      } else if (response.status == 302) {
+        window.location.href = '/payment';
+      } else {
+        alert('An error occurred while submitting the order. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while submitting the order. Please try again.');
+    }
+  });
+
+  var upButtons = document.querySelectorAll('.up');
+
+  upButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    upButtons.forEach(button => {
+      if (window.pageYOffset > 200) {
+        button.style.visibility = 'visible';
+      } else {
+        button.style.visibility = 'hidden';
+      }
+    });
+  });
+
+</script>
+
+
+
+</html>

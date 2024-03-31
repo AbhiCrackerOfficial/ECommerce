@@ -1,0 +1,266 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OTP</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #21232d;
+        height: 100vh;
+        width: 100vw;
+        background-image: url("{% static 'imgs/bg.jpg' %}");
+        background-size: cover;
+      }
+
+      .container {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: auto;
+        width: auto;
+        color: #fff;
+        background: rgba(247, 244, 244, 0.521);
+        border-radius: 10px;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        color: black;
+        padding: 2em;
+      }
+
+      .otp-field {
+        display: flex;
+      }
+
+      h1 {
+        font-size: 30px;
+        margin-bottom: 15px;
+        /* color: whitesmoke; */
+      }
+
+      button {
+        background-color: #f9a825;
+        padding: 10px;
+        margin-top: 16px;
+        font-weight: bold;
+        border-radius: 18px;
+      }
+
+      .otp-field input {
+        width: 40px;
+        font-size: 32px;
+        /* padding: 10px; */
+        text-align: center;
+        border-radius: 5px;
+        margin: 2px;
+        border: 2px solid #55525c;
+        /* background: #21232d; */
+        font-weight: bold;
+        color: #21232d;
+        outline: none;
+        transition: all 0.1s;
+      }
+
+      .otp-field input:focus {
+        border: 2px solid #a527ff;
+        box-shadow: 0 0 2px 2px #a527ff6a;
+      }
+
+      .disabled {
+        opacity: 0.5;
+      }
+
+      .space {
+        margin-right: 1rem !important;
+      }
+      .invalid-input {
+        padding: 10px;
+        background-color: #e74c3c;
+        color: #fff;
+        font-size: 20px;
+        width: 400px;
+        text-align: center;
+        position: absolute;
+        top: 80px;
+        right: -630px;
+        z-index: 9999;
+      }
+
+      .success-input {
+        padding: 10px;
+        background-color: #6bdd4e;
+        color: #fff;
+        font-size: 20px;
+        width: 400px;
+        text-align: center;
+        position: absolute;
+        top: 80px;
+        right: -630px;
+        z-index: 9999;
+      }
+
+      .info-input {
+        padding: 10px;
+        background-color: #151fe7;
+        color: #fff;
+        font-size: 20px;
+        width: 400px;
+        text-align: center;
+        position: absolute;
+        top: 80px;
+        right: -630px;
+        z-index: 9999;
+      }
+      .container form{
+        display:flex;
+        justify-content:center;
+        align-items:center;
+        flex-direction:column;
+      }
+
+      .no-arrows::-webkit-outer-spin-button,
+      .no-arrows::-webkit-inner-spin-button {
+      /* Remove default arrows */
+      -webkit-appearance: none;
+       margin: 0;
+      }
+
+      .no-arrows {
+      /* Disable default arrows */
+      -moz-appearance: textfield;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% if messages %}
+    <div id="message">
+      {% for message in messages %}
+      <div class="{{ message.tags }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    <div class="container">
+      <h1>Enter OTP</h1>
+      <form action="{% url 'submit_otp' %}" method="POST">
+        {% csrf_token %}
+        <div class="otp-field">
+          <input type="number" name="otp_1" maxlength="1" class="no-arrows"/>
+          <input type="number" name="otp_2" maxlength="1" class="no-arrows"/>
+          <input class="space no-arrows" type="number" name="otp_3" maxlength="1" />
+          <input type="number" name="otp_4" maxlength="1" class="no-arrows"/>
+          <input type="number" name="otp_5" maxlength="1" class="no-arrows"/>
+          <input type="number" name="otp_6" maxlength="1" class="no-arrows"/>
+        </div>
+        <input type="hidden" id="otp" name="otp" value="" />
+        <button type="submit">SUBMIT</button>
+      </form>
+    </div>
+  </body>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+  <script>
+    $(function () {
+      const messageElem = $("#message > div");
+      if (messageElem.hasClass("error")) {
+        messageElem.addClass("invalid-input");
+      } else if (messageElem.hasClass("success")) {
+        messageElem.addClass("success-input");
+      }
+
+      messageElem.animate(
+        {
+          right: 0,
+        },
+        1000,
+        function () {
+          if (messageElem.hasClass("success-input")) {
+            $(this)
+              .delay(2000)
+              .fadeOut(function () {
+                // Redirect to the home page after 2 seconds
+                window.location.href = "{% url 'home' %}";
+              });
+          } else {
+            $(this).delay(2000).fadeOut();
+          }
+        }
+      );
+    });
+    const inputs = document.querySelectorAll(".otp-field input");
+    inputs.forEach((input, index) => {
+      input.dataset.index = index;
+      input.addEventListener("keyup", handleOtp);
+      input.addEventListener("paste", handleOnPasteOtp);
+    });
+
+    function handleOtp(e) {
+      const input = e.target;
+      let value = input.value;
+      const otpRegex = /^\d{1}$/;
+      let isValidInput = otpRegex.test(value);
+      input.value = "";
+      input.value = isValidInput ? value[0] : "";
+
+      let fieldIndex = input.dataset.index;
+      if (fieldIndex < inputs.length - 1 && isValidInput) {
+        input.nextElementSibling.focus();
+      }
+
+      if (e.key === "Backspace" && fieldIndex > 0) {
+        input.previousElementSibling.focus();
+      }
+
+      // if (fieldIndex == inputs.length - 1 && isValidInput) {
+      //     submit();
+      // }
+    }
+
+    function handleOnPasteOtp(e) {
+      const data = e.clipboardData.getData("text");
+      const value = data.split("");
+      // if (value.length === inputs.length) {
+      //     inputs.forEach((input, index) => (input.value = value[index]));
+      //     submit();
+      // }
+    }
+
+    function submit() {
+      let otp = "";
+      inputs.forEach((input) => {
+        otp += input.value;
+        input.disabled = true;
+        input.classList.add("disabled");
+      });
+      document.getElementById("otp").value = otp;
+    }
+
+    // Uncomment this part to validate the OTP and enable the submit button
+    inputs.forEach((input) => {
+      input.addEventListener("input", () => {
+        let allFieldsFilled = true;
+        inputs.forEach((field) => {
+          if (field.value === "") {
+            allFieldsFilled = false;
+          }
+        });
+        if (allFieldsFilled) {
+          submit();
+        }
+      });
+    });
+  </script>
+</html>
