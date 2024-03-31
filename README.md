@@ -13,7 +13,7 @@ A Basic Django-powered ecommerce platform with a robust user experience, advance
 ## Screenshots
 
 ![Product Page](/screenshots/2.png)
-*Sigin Page*
+*Signin Page*
 
 ![Product Page](/screenshots/4.png)
 *Product Page*
